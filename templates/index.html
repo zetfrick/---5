@@ -15,8 +15,6 @@
         <input type="text" id="service_type" name="service_type" required><br><br>
         <label for="processing_time">Время выполнения (сек):</label>
         <input type="number" id="processing_time" name="processing_time" value="5" required><br><br>
-        <label for="workers">Количество работников:</label>
-        <input type="number" id="workers" name="workers" value="2" required><br><br>
         <button type="submit">Добавить заказ</button>
     </form>
     <button id="clearButton">Очистить список заказов</button>
@@ -29,7 +27,6 @@
             const car_model = document.getElementById('car_model').value;
             const service_type = document.getElementById('service_type').value;
             const processing_time = document.getElementById('processing_time').value;
-            const workers = document.getElementById('workers').value;
             fetch('/add_order', {
                 method: 'POST',
                 headers: {
@@ -40,17 +37,6 @@
               .then(data => {
                   alert(data.message);
                   loadOrders();
-              });
-
-            fetch('/update_workers', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ workers })
-            }).then(response => response.json())
-              .then(data => {
-                  alert(data.message);
               });
         });
 

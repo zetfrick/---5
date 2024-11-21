@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Установка количества работников</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <h1>Установка количества работников</h1>
+    <form action="/set_workers" method="POST">
+        <label for="workers">Количество работников:</label>
+        <input type="number" id="workers" name="workers" required min="1" value="3">
+        <button type="submit">Установить</button>
+    </form>
+
+    <script>
+        // Отправка формы и обработка ответа от сервера
+        const form = document.querySelector('form');
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            
+            const formData = new FormData(form);
+            const response = await fetch('/set_workers', {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await response.json();
+            alert(data.message || data.error);
+
+            // Перезагрузка страницы, чтобы отобразить обновленное количество работников
+            location.reload();  // Это перезагрузит текущую страницу
+        });
+    </script>
+</body>
+</html>
