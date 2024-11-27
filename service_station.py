@@ -55,9 +55,3 @@ class ServiceStation:
         if self.processing_thread is None or not self.processing_thread.is_alive():
             self.processing_thread = Thread(target=self.process_orders, daemon=True)
             self.processing_thread.start()
-
-    def update_workers(self, workers):
-        self.workers = workers
-        if self.processing_thread is not None and self.processing_thread.is_alive():
-            self.processing_thread.join()  # Ожидание завершения текущего потока
-        self.start_processing()  # Перезапуск обработки заказов с новым количеством работников

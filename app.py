@@ -93,16 +93,5 @@ def clear_orders():
     service_station.clear_orders()
     return jsonify({'message': 'Список заказов очищен'}), 200
 
-# Обновление количества работников
-@app.route('/update_workers', methods=['POST'])
-def update_workers():
-    if service_station is None:
-        return jsonify({'error': 'Станция обслуживания не настроена!'}), 400
-    
-    data = request.json
-    workers = data.get('workers', 1)
-    service_station.update_workers(workers)
-    return jsonify({'message': f'Количество работников обновлено до {workers}'}), 200
-
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=False)
