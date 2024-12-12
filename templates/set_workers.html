@@ -4,33 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Установка количества работников</title>
+    <!-- Подключает стили -->
     <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
     <h1>Установка количества работников</h1>
+    <!-- Форма для установки количества работников -->
     <form action="/set_workers" method="POST">
         <label for="workers">Количество работников:</label>
+        <!-- Поле ввода -->
         <input type="number" id="workers" name="workers" required min="1" value="3">
         <button type="submit">Установить</button>
     </form>
 
     <script>
-        // Отправка формы и обработка ответа от сервера
-        const form = document.querySelector('form');
-        form.addEventListener('submit', async (event) => {
+        // Отправка и обработка ответа от сервера
+        const form = document.querySelector('form');  // Получает элемент
+        form.addEventListener('submit', async (event) => {  // Обработчик отправки формы
             event.preventDefault();
-            
-            const formData = new FormData(form);
-            const response = await fetch('/set_workers', {
+
+            const formData = new FormData(form);  // Создает объект FormData из формы
+            const response = await fetch('/set_workers', {  // Отправляет запрос на сервер для установки количества работников
                 method: 'POST',
                 body: formData
             });
 
-            const data = await response.json();
-            alert(data.message || data.error);
+            const data = await response.json();  // Ответ от сервера
+            alert(data.message || data.error);  // Сообщение об успешной установке количества работников
 
-            // Перезагрузка страницы, чтобы отобразить обновленное количество работников
-            location.reload();  // Это перезагрузит текущую страницу
+            // Перезагрузка страницы
+            location.reload();
         });
     </script>
 </body>

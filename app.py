@@ -25,7 +25,7 @@ def set_workers_count(workers):
     with open("config.txt", "w") as f:
         f.write(str(workers))
 
-# Проверка наличия сохраненного числа работников в файле
+# Проверка наличия числа работников в файле
 workers_count = get_workers_count()
 
 # Инициализация service_station, если количество работников задано
@@ -67,11 +67,14 @@ def add_order():
     if service_station is None:
         return jsonify({'error': 'Станция обслуживания не настроена!'}), 400
     
-    data = request.json
+    # Получает данные из JSON-запроса
+    data = request.json 
+    # Получает модель автомобиля
     car_model = data.get('car_model')
+    # Получает тип обслуживания
     service_type = data.get('service_type')
     processing_time = data.get('processing_time', 5)  # Время выполнения заказа в секундах
-    service_station.add_order(car_model, service_type, processing_time)
+    service_station.add_order(car_model, service_type, processing_time) # Добавляет заказ в станцию обслуживания
     return jsonify({'message': 'Заказ успешно добавлен'}), 201
 
 # Получение списка всех заказов
@@ -80,7 +83,8 @@ def get_orders():
     if service_station is None:
         return jsonify({'error': 'Станция обслуживания не настроена!'}), 400
     
-    orders = service_station.get_orders()
+    orders = service_station.get_orders() # Получает список заказов
+    # Формирует список заказов
     orders_list = [{'id': order.id, 'car_model': order.car_model, 'service_type': order.service_type, 'status': order.status, 'created_at': order.created_at.isoformat()} for order in orders]
     return jsonify(orders_list), 200
 
@@ -90,8 +94,8 @@ def clear_orders():
     if service_station is None:
         return jsonify({'error': 'Станция обслуживания не настроена!'}), 400
     
-    service_station.clear_orders()
+    service_station.clear_orders() # Очищает список заказов
     return jsonify({'message': 'Список заказов очищен'}), 200
 
 if __name__ == '__main__':
-    app.run(debug=True, use_reloader=False)
+    app.run(debug=True, use_reloader=False) # Запускает приложение

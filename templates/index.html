@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Станция технического обслуживания автомобилей</title>
+    <!-- Подключает стили -->
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
@@ -19,15 +20,15 @@
     </form>
     <button id="clearButton">Очистить список заказов</button>
     <h2>Заказы</h2>
-    <ul id="ordersList"></ul>
+    <ul id="ordersList"></ul> // Список заказов
 
     <script>
-        document.getElementById('orderForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const car_model = document.getElementById('car_model').value;
-            const service_type = document.getElementById('service_type').value;
-            const processing_time = document.getElementById('processing_time').value;
-            fetch('/add_order', {
+        document.getElementById('orderForm').addEventListener('submit', function(event) {  // Обработчик отправки формы
+            event.preventDefault();  // Предотвращает стандартное поведение формы
+            const car_model = document.getElementById('car_model').value;  // Получает значение модели автомобиля
+            const service_type = document.getElementById('service_type').value;  // Получает значение типа обслуживания
+            const processing_time = document.getElementById('processing_time').value;  // Получает значение времени выполнения
+            fetch('/add_order', {  // Отправляет запрос на сервер
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -35,42 +36,42 @@
                 body: JSON.stringify({ car_model, service_type, processing_time })
             }).then(response => response.json())
               .then(data => {
-                  alert(data.message);
-                  loadOrders();
+                  alert(data.message);  // Показывает сообщение об успешном добавлении заказа
+                  loadOrders();  // Обновляет список заказов
               });
         });
 
-        document.getElementById('clearButton').addEventListener('click', function() {
+        document.getElementById('clearButton').addEventListener('click', function() {  // Обработчик нажатия кнопки очистки списка заказов
             fetch('/clear_orders', {
                 method: 'POST'
             }).then(response => response.json())
               .then(data => {
-                  alert(data.message);
-                  loadOrders();
+                  alert(data.message);  // Показывает сообщение об успешной очистке списка заказов
+                  loadOrders();  // Обновляет список заказов
               });
         });
 
-        function loadOrders() {
+        function loadOrders() {  // Функция для загрузки списка заказов
             fetch('/get_orders')
                 .then(response => response.json())
                 .then(data => {
-                    const ordersList = document.getElementById('ordersList');
-                    ordersList.innerHTML = '';
-                    data.forEach(order => {
-                        const listItem = document.createElement('li');
-                        listItem.textContent = `ID: ${order.id}, Модель автомобиля: ${order.car_model}, Тип обслуживания: ${order.service_type}, Статус: ${order.status}, Дата создания: ${order.created_at}`;
-                        listItem.className = order.status.toLowerCase().replace(' ', '-');
-                        ordersList.appendChild(listItem);
+                    const ordersList = document.getElementById('ordersList');  // Получает элемент списка заказов
+                    ordersList.innerHTML = '';  // Очищает список заказов
+                    data.forEach(order => {  // Перебирает все заказы
+                        const listItem = document.createElement('li');  // Создает элемент списка
+                        listItem.textContent = `ID: ${order.id}, Модель автомобиля: ${order.car_model}, Тип обслуживания: ${order.service_type}, Статус: ${order.status}, Дата создания: ${order.created_at}`;  // Устанавливает текст элемента списка
+                        listItem.className = order.status.toLowerCase().replace(' ', '-');  // Устанавливает класс элемента списка
+                        ordersList.appendChild(listItem);  // Добавляет элемент списка в список заказов
                     });
                 });
         }
 
-        function updateOrders() {
-            setInterval(loadOrders, 5000); // Обновление каждые 5 секунд
+        function updateOrders() {  // Функция для обновления списка заказов
+            setInterval(loadOrders, 5000);  // Обновление
         }
 
-        loadOrders();
-        updateOrders();
+        loadOrders();  // Загружает список заказов при загрузке страницы
+        updateOrders();  // Начинает обновление списка
     </script>
 </body>
 </html>
